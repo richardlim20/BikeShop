@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Check if the POST request is coming with product details
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $product_id = $_POST['product_id'];
     $product_name = $_POST['product_name'];
@@ -38,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['cart'][] = $product;
     }
 
-    // Redirect back to the products page or cart page
+    // Redirect to cart page
     header('Location: chart.php');
     exit();
 }

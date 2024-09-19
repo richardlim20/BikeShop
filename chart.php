@@ -1,17 +1,15 @@
 <?php
 session_start();
 
-// Update quantity logic
+// Update quantity
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_qty'])) {
     $product_id = $_POST['product_id'];
     $quantity = intval($_POST['qty']); // Convert quantity to integer
 
-    // Ensure quantity is at least 1
     if ($quantity < 1) {
         $quantity = 1;
     }
 
-    // Loop through the cart and update the quantity
     foreach ($_SESSION['cart'] as &$item) {
         if ($item['id'] == $product_id) {
             $item['qty'] = $quantity;
@@ -19,12 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_qty'])) {
         }
     }
 
-    // Redirect to the cart page or a confirmation page
     header('Location: chart.php');
     exit();
 }
 
-// Remove item logic
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_item'])) {
     foreach ($_SESSION['cart'] as $key => $item) {
         if ($item['id'] == $_POST['product_id']) {
@@ -35,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['remove_item'])) {
     }
 }
 
-// Calculate total
 function calculate_total() {
     $total = 0;
     foreach ($_SESSION['cart'] as $item) {
@@ -158,7 +153,7 @@ function calculate_total() {
     <div class="checkout-container">
         <h3>Total: $<?php echo number_format(calculate_total(), 2); ?></h3>
 
-        <!-- Hidden fields for each item in the cart -->
+        <!-- Hidden fields to send to billing.php -->
         <?php if (!empty($_SESSION['cart'])): ?>
             <?php foreach ($_SESSION['cart'] as $item): ?>
                 <input type="hidden" name="cart[<?php echo $item['id']; ?>][id]" value="<?php echo htmlspecialchars($item['id']); ?>">

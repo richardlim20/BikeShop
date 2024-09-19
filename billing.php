@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <!-- Identify your business so that you can collect the payments. -->
                     <input type="hidden" name="business" value="<?php echo PAYPAL_ID; ?>" />
 
-                <!-- Specify details about the item that buyers will purchase. part of this field will be used in ipn.php-->
+                <!-- Use cart parameters instead of individual items-->
                     <input type="hidden" name="item_name" value="<?php echo $cart_names; ?>" />
                     <input type="hidden" name="amount" value="<?php echo $cart_total ?>" />
                     <input type="hidden" name="currency_code" value="<?php echo PAYPAL_CURRENCY; ?>" />
