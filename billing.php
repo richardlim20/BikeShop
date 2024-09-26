@@ -25,6 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
+//Hidden field for gpay
+echo '<input type="hidden" id="cart_total" value="' . $cart_total . '">';
+
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div id="payment-container" class="bg-gray-300 w-[40%] p-5">
             <h2>Select a payment option</h2>
             <div class="flex-col">
-                <!-- define paypal button and send data -->
+            <!-- PayPal Section -->
                 <form action="<?php echo PAYPAL_URL; ?>" method="post" class="flex justify-between">
 
                 <!-- Specify a Buy Now button. -->
@@ -79,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <!-- Identify your business so that you can collect the payments. -->
                     <input type="hidden" name="business" value="<?php echo PAYPAL_ID; ?>" />
 
-                <!-- Use cart parameters instead of individual items-->
+                <!-- Specify details about the item that buyers will purchase. part of this field will be used in ipn.php-->
                     <input type="hidden" name="item_name" value="<?php echo $cart_names; ?>" />
                     <input type="hidden" name="amount" value="<?php echo $cart_total ?>" />
                     <input type="hidden" name="currency_code" value="<?php echo PAYPAL_CURRENCY; ?>" />
@@ -90,10 +93,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div>Paypal</div>
                     <input type="image" border="0" name="submit" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif"/>
                 </form>
+            <!-- Google Pay section -->
                 <div class="flex justify-between">
-                    <input type="radio" name="radgroup" value="gpay" id="gpay-option" class="block mt-4">
-                    <label for="gpay-option">Google Pay</label>
+                    <div>Google Pay</div>
+                    <div id="container"></div>
                 </div>
+                <script src="gpay.js"></script>
+                <script async src="https://pay.google.com/gp/p/js/pay.js" onload="onGooglePayLoaded()"></script>
+                
                 <div class="flex justify-between">
                     <input type="radio" name="radgroup" value="other1" id="other1-option" class="block mt-4">
                     <label for="other1-option">Other Payment 1</label>
