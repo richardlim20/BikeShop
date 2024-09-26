@@ -103,21 +103,78 @@ echo '<input type="hidden" id="cart_total" value="' . $cart_total . '">';
                 <script async src="https://pay.google.com/gp/p/js/pay.js" onload="onGooglePayLoaded()"></script>
                 
                 
-            <!-- Stripe Mastercard section -->
+            <!-- Stripe Payment section -->
                 <?php
                     echo
-                    "<form id='checkoutForm' method='POST' action='stripe_checkout.php' class='flex justify-between mt-4'>
-                    <input type='hidden' name='cart_total' value='" . htmlspecialchars($cart_total) . "'>
+                    '<form id="checkoutForm" method="POST" action="stripe_checkout.php" class="flex justify-between mt-4">
+                    <input type="hidden" name="cart_total" value="' . htmlspecialchars($cart_total) . '">
                     <div>Stripe Payment method</div>
-                    <button type='submit' class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4'>Stripe Payment</button>
-                  </form>";
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4">Stripe Payment</button>
+                  </form>';
                 ?>
+                
+            <!-- Braintree payment section -->
+            <div class="flex justify-between mt-4">
+                <div>Pay with BrainTree Visa</div>
+                <button id="openModalBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4">
+                    Pay with Braintree Visa
+                </button>
+            </div>
 
-                <div class="flex justify-between">
-                    <input type="radio" name="radgroup" value="other2" id="other2-option" class="block mt-4">
-                    <label for="other2-option">Other Payment 2</label>
+            <div id="paymentModal" class="fixed inset-0 hidden bg-gray-500 bg-opacity-50 flex justify-center items-center">
+                <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                    <h2 class="text-xl font-bold mb-4">Braintree Visa Payment</h2>
+                <?php
+                    echo '
+                    <form id="payment-form" method="POST" action="braintree_checkout.php">
+                        <label for="card-number" >Card Number</label>
+                        <input type="text" id="card-number" name="card_number" class="mt-1 p-2 border w-full" placeholder="4111111111111111" required>
+
+                        <label for="expiry-month" >Expiry Month</label>
+                        <input type="text" id="expiry-month" name="expiry_month" class="mt-1 p-2 border w-full" placeholder="MM" required>
+
+                        <label for="expiry-year" >Expiry Year</label>
+                        <input type="text" id="expiry-year" name="expiry_year" class="mt-1 p-2 border w-full" placeholder="YYYY" required>
+
+                        <label for="cvv" >CVV</label>
+                        <input type="text" id="cvv" name="cvv" class="mt-1 p-2 border w-full" placeholder="123" required>
+
+                        <input type="hidden" name="cart_total" value="' . htmlspecialchars($cart_total) . '">
+
+                        <div class="flex justify-between mt-6">
+                            <button type="button" id="closeModalBtn" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                                Cancel
+                            </button>
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Checkout
+                            </button>
+                        </div>
+                    </form>
+                    '
+                ?>
                 </div>
-                <button class="bg-blue-500 w-full p-2 mt-8">Continue to Checkout</button>
+            </div>
+
+    <script>
+        const modal = document.getElementById('paymentModal');
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        openModalBtn.addEventListener('click', function() {
+            modal.classList.remove('hidden');
+        });
+
+        closeModalBtn.addEventListener('click', function() {
+            modal.classList.add('hidden');
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+    </script>
+
             </div>
 </body>
 </html>
