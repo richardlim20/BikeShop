@@ -37,6 +37,7 @@ echo '<input type="hidden" id="cart_total" value="' . $cart_total . '">';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Billing Information</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
     <h1>Provide Billing Information</h1>
@@ -101,10 +102,17 @@ echo '<input type="hidden" id="cart_total" value="' . $cart_total . '">';
                 <script src="gpay.js"></script>
                 <script async src="https://pay.google.com/gp/p/js/pay.js" onload="onGooglePayLoaded()"></script>
                 
-                <div class="flex justify-between">
-                    <input type="radio" name="radgroup" value="other1" id="other1-option" class="block mt-4">
-                    <label for="other1-option">Other Payment 1</label>
-                </div>
+                
+            <!-- Stripe Mastercard section -->
+                <?php
+                    echo
+                    "<form id='checkoutForm' method='POST' action='stripe_checkout.php' class='flex justify-between mt-4'>
+                    <input type='hidden' name='cart_total' value='" . htmlspecialchars($cart_total) . "'>
+                    <div>Stripe Payment method</div>
+                    <button type='submit' class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4'>Stripe Payment</button>
+                  </form>";
+                ?>
+
                 <div class="flex justify-between">
                     <input type="radio" name="radgroup" value="other2" id="other2-option" class="block mt-4">
                     <label for="other2-option">Other Payment 2</label>
